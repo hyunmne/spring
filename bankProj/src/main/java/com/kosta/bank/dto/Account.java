@@ -44,6 +44,14 @@ public class Account {
 		this.type = type;
 		this.grade = grade;
 	}
-	
-	
+	public void deposit(int money) throws Exception {
+		if(money < 0) throw new Exception("입금액 오류"); 
+		balance += money;
+	}
+	public void withdraw(int money) throws Exception {
+		if(balance < money) throw new Exception("잔액 부족 오류");
+		balance -= money;
+	}
+
+
 }

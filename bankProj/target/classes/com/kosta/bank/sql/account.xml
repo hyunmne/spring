@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="mapper.account">
-	<insert id="insertAccount" parameterType="com.kosta.bank.dto.Account">
+	<insert id="insertAccount" parameterType="account">
 		<![CDATA[
 			insert into account (id, name, balance, type, grade)
 			values (#{id},#{name},#{balance},#{type},#{grade})
 		]]>
 	</insert>
 	
-	<select id="selectAccount" parameterType="String" resultType="com.kosta.bank.dto.Account" >
+	<select id="selectAccount" parameterType="String" resultType="account" >
 		<![CDATA[
 			select * from account where id = #{id}
 		]]>
@@ -17,11 +17,11 @@
 	
 	<update id="updateAccountBalance" parameterType="Map">
 		<![CDATA[
-			update account set balanace = #{balance} where id = #{id}
+			update account set balance = #{balance} where id = #{id}
 		]]>
 	</update>
 	
-	<select id="selectAccList" resultType="com.kosta.bank.dto.Account">
+	<select id="selectAccList" resultType="account">
 		<![CDATA[
 			select * from account
 		]]>

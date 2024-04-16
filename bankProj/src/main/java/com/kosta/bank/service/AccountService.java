@@ -10,4 +10,6 @@ public interface AccountService {
 	void deposit(String id, Integer money) throws Exception;
 	void withdraw(String id, Integer money) throws Exception;
 	List<Account> accList() throws Exception;
+	Boolean checkAccountDoubleId(String id) throws Exception;
+	void transfer(String sid, String rid, Integer money) throws Exception;
 }

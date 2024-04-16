@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kosta.bank.dto.Account;
@@ -18,6 +20,18 @@ public class AccountController {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@ResponseBody
+	@RequestMapping(value = "/accountDoubleId", method = RequestMethod.POST)
+	public String accountDoubleIdCheck(String id) {
+		try {
+			Boolean check = accountService.checkAccountDoubleId(id);
+			return String.valueOf(check);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "false";
+		}
+	}
 	
 	@RequestMapping(value = "/makeAccount", method = RequestMethod.GET)
 	public String makeAccount() {
@@ -117,4 +131,28 @@ public class AccountController {
 			return "error";
 		}
 	}
+	
+	@RequestMapping(value="/transfer", method = RequestMethod.GET)
+	public String Transfer() {
+		return "transfer";
+	}
+	
+	@Transactional
+	@RequestMapping(value="/transfer", method = RequestMethod.POST)
+	public ModelAndView Transfer(String sid, String rid, Integer money) {
+		// 모델과 뷰를 같이 줄 때
+		ModelAndView mav = new ModelAndView();
+		try {
+			accountService.transfer(sid, rid, money);
+			Account acc = accountService.accountInfo(sid);
+			mav.addObject("acc", acc); // 데이터..
+			mav.setViewName("accountInfo"); // 이동페이지,.. ?
+		} catch(Exception e) {
+			e.printStackTrace();
+			mav.addObject("err", e.getMessage());
+			mav.setViewName("error");
+		}
+		return mav;
+	}
+
 }

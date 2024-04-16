@@ -49,4 +49,24 @@ public class AccountServiceImpl implements AccountService {
 		return accDao.selectAccList();
 	}
 
+	@Override
+	public Boolean checkAccountDoubleId(String id) throws Exception {
+		Account acc = accDao.selectAccount(id);
+		return acc!=null;
+	}
+
+	@Override
+	public void transfer(String sid, String rid, Integer money) throws Exception {
+		Account sacc = accDao.selectAccount(sid);
+		if(sacc==null) throw new Exception("보내는 계좌번호 오류");
+		sacc.withdraw(money);
+		
+		Account racc = accDao.selectAccount(rid);
+		if(racc==null) throw new Exception("받는 계좌번호 오류");
+		racc.deposit(money);
+		
+		accDao.updateAccountBalance(sid, sacc.getBalance());
+		accDao.updateAccountBalance(rid, racc.getBalance());
+	}
+
 }

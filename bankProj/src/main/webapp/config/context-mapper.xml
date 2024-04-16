@@ -8,6 +8,7 @@
 		<property name="mapperLocations">
 			<list><value>classpath*:com/kosta/bank/sql/*.xml</value></list>
 		</property>
+		<property name="configLocation" value="/config/mybatis-alias.xml" />
 	</bean>
 	
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">

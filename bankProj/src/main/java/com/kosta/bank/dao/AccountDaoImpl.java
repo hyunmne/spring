@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.kosta.bank.dto.Account;
 
+@Repository // 자동 생성 (빈 객체 생성하는 것)
 public class AccountDaoImpl implements AccountDao {
 
 	private SqlSessionTemplate sqlSession;

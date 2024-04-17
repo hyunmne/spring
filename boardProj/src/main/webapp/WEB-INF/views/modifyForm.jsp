@@ -43,6 +43,7 @@ table {
 </script>
 </head>
 <body>
+<jsp:include page="main.jsp"/>
 	<section id="./writeForm">
 		<h2>게시판 글 수정</h2>
 		<form action="boardModify" method="post" enctype="multipart/form-data">

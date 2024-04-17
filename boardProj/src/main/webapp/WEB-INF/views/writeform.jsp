@@ -26,7 +26,51 @@ table {
 	text-align: center;
 }
 </style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
+var reader = new FileReader();
+reader.onload=function(e) {
+	console.log(e.target.result)
+	const image = new Image();
+	image.src = e.target.result;		
+	image.onload = imageEvent => {
+		imageSizeChange(image);
+		console.log(image)
+		$('#preview').attr("src",image.imgUrl);
+	};		
+}
+function imageSizeChange(image) {
+    let canvas = document.createElement("canvas");
+    max_size = 100, // 최대 기준을 1280으로 잡음.
+    width = image.width,
+    height = image.height;
+    if (width > height) {
+      // 가로가 길 경우
+      if (width > max_size) {
+        height *= max_size / width;
+        width = max_size;
+      }
+    } else {
+      // 세로가 길 경우
+      if (height > max_size) {
+        width *= max_size / height;
+        height = max_size;
+      }
+    }
+    canvas.width = width;
+    canvas.height = height;
+    canvas.getContext("2d").drawImage(image, 0, 0, width, height);
+    image.imgUrl = canvas.toDataURL("image/jpeg", 0.5);
+  }
+	
+	$(function() {
+		$("#file").change(function(e) {
+			var file = e.target.files[0];
+			if (file) {
+				reader.readAsDataURL(file);
+			}
+		})
+	})
 </script>
 </head>
 <body>
@@ -51,7 +95,9 @@ table {
 				</tr>
 				<tr>
 					<td class="td_left"><label for="file">이미지 파일 첨부</label></td>
-					<td class="td_right"><input name="file" type="file" id="file" accept="image/*"/></td>
+					<td class="td_right">
+					<img src="" id="preview" alt="" /> <br>
+					<input name="file" type="file" id="file" accept="image/*"/></td>
 				</tr>
 			</table>
 			<section id="commandCell">

@@ -1,5 +1,8 @@
 package com.kosta.bank.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +20,15 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memService;
-	
+
 	@Autowired
 	private HttpSession session;
-	
+
 	@RequestMapping(value="/join", method = RequestMethod.GET)
 	public String Join() {
 		return "join";
 	}
-	
+
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String Join(Member mem, Model model) {
 		try {
@@ -38,7 +41,7 @@ public class MemberController {
 			return "error";
 		}
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value="/memberDoubleId", method=RequestMethod.POST)
 	public String memberDoubleIdCheck(String id) {
@@ -50,18 +53,35 @@ public class MemberController {
 			return "false";
 		}
 	}
-	
+
 	@RequestMapping(value="/login", method = RequestMethod.GET)
 	public String Login() {
 		return "login";
 	}
-	
+
 	@RequestMapping(value="/login", method = RequestMethod.POST)
-	public String Login(String id, String password, Model model) {
+	public String Login(String id, String password, String autoLogin, Model model, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			Member mem = memService.login(id, password);
-			mem.setPassword("");
-			session.setAttribute("user", mem.getId());
+
+			// 로그인 성공시 cookie check 저저장
+			Cookie autoLoginCookie = null;
+			Cookie idCookie = null;
+			Cookie pwCookie = null;
+			if(autoLogin!=null) {
+				autoLoginCookie = new Cookie("autoLogin", autoLogin);
+				idCookie = new Cookie("id", id);
+				pwCookie = new Cookie("password", password);
+			} else {
+				autoLoginCookie = new Cookie("autoLogin", "false");
+				idCookie = new Cookie("id", "");
+				pwCookie = new Cookie("password", "");
+			}
+			response.addCookie(autoLoginCookie);
+			response.addCookie(idCookie);
+			response.addCookie(pwCookie);
+
+			memService.login(id, password);
+			session.setAttribute("user", id);
 			return "makeAccount";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -69,7 +89,7 @@ public class MemberController {
 			return "error";
 		}
 	}
-	
+
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	public String Logout(Model model) {
 		try {
@@ -81,5 +101,5 @@ public class MemberController {
 			return "error";
 		}
 	}
-	
+
 }

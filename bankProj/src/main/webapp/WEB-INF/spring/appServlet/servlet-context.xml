@@ -28,15 +28,15 @@
 <!-- 		<beans:property name="sqlSession" ref="sqlSession" /> -->
 <!-- 	</beans:bean> -->
 	
-	<beans:bean id="accountService" class="com.kosta.bank.service.AccountServiceImpl">
-		<beans:property name="accDao" ref="accountDao" />
-	</beans:bean>
+<!-- 	<beans:bean id="accountService" class="com.kosta.bank.service.AccountServiceImpl"> -->
+<!-- 		<beans:property name="accDao" ref="accountDao" /> -->
+<!-- 	</beans:bean> -->
 	
-	<beans:bean id="memberDao" class="com.kosta.bank.dao.MemberDaoImpl">
-		<beans:property name="sqlSession" ref="sqlSession" />
-	</beans:bean>
+<!-- 	<beans:bean id="memberDao" class="com.kosta.bank.dao.MemberDaoImpl"> -->
+<!-- 		<beans:property name="sqlSession" ref="sqlSession" /> -->
+<!-- 	</beans:bean> -->
 	
-	<beans:bean id="memberService" class="com.kosta.bank.service.MemberServiceImpl">
-		<beans:property name="memDao" ref="memberDao" />
-	</beans:bean>
+<!-- 	<beans:bean id="memberService" class="com.kosta.bank.service.MemberServiceImpl"> -->
+<!-- 		<beans:property name="memDao" ref="memberDao" /> -->
+<!-- 	</beans:bean> -->
 </beans:beans>

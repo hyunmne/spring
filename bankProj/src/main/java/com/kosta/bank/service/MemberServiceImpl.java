@@ -1,15 +1,20 @@
 package com.kosta.bank.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.kosta.bank.dao.MemberDao;
 import com.kosta.bank.dto.Member;
 
+@Service
 public class MemberServiceImpl implements MemberService {
 	
+	@Autowired
 	private MemberDao memDao;
 
-	public void setMemDao(MemberDao memDao) {
-		this.memDao = memDao;
-	}
+//	public void setMemDao(MemberDao memDao) {
+//		this.memDao = memDao;
+//	}
 
 	@Override
 	public void join(Member mem) throws Exception {

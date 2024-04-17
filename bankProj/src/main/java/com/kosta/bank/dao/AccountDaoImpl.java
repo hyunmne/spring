@@ -5,18 +5,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kosta.bank.dto.Account;
 
 @Repository // 자동 생성 (빈 객체 생성하는 것)
 public class AccountDaoImpl implements AccountDao {
-
-	private SqlSessionTemplate sqlSession;
 	
-	public void setSqlSession(SqlSessionTemplate sqlSession) {
-		this.sqlSession = sqlSession;
-	}
+	@Autowired
+	private SqlSessionTemplate sqlSession;
 
 	@Override
 	public void insertAccount(Account acc) throws Exception {

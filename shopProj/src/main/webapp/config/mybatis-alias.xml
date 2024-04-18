@@ -4,6 +4,7 @@
 	"http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-<!-- 		<typeAlias type="com.kosta.shop.dto.Board" alias="Board" /> -->
+		<typeAlias type="com.kosta.shop.dto.Member" alias="Member" />
+		<typeAlias type="com.kosta.shop.dto.Goods" alias="Goods" />
 	</typeAliases>
 </configuration>

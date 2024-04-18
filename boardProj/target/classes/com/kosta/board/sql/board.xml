@@ -15,6 +15,23 @@
 		]]>
 	</select>
 	
+<!-- 	# : 문자열일 경우 '까지 붙여줘야 함 -->
+<!-- 	$ : 따옴표 없이 원래의 값 자체를 쿼리문에 삽입하고 싶을 때 -->
+	<select id="selectBrdSearchList" parameterType="Map" resultType="Board">
+		<![CDATA[
+			select * from board
+			where ${type} like '%${word}%'
+			order by num desc limit #{row}, 10 
+		]]>
+	</select>
+	
+	<select id="selectBrdSearchCnt" resultType="Integer">
+		<![CDATA[
+			select count(*) from board
+			where ${type} like '%${word}%'
+		]]>
+	</select>
+	
 	<select id="selectBoard" parameterType="Integer" resultType="Board">
 		<![CDATA[
 			select * from board where num = #{num}

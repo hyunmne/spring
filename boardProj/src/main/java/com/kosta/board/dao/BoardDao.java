@@ -14,4 +14,7 @@ public interface BoardDao {
 	void updateBoard(Board board) throws Exception;
 	void updateBrdViewCnt(Integer num) throws Exception;
 	void deleteFile(Integer num) throws Exception;
+	
+	List<Board> selectBrdSearchList(Integer row, String type, String word) throws Exception;
+	Integer selectBrdSearchCnt(String type, String word) throws Exception;	
 }

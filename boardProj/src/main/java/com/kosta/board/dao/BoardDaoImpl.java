@@ -1,6 +1,8 @@
 package com.kosta.board.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +57,23 @@ public class BoardDaoImpl implements BoardDao {
 	@Override
 	public void deleteFile(Integer num) throws Exception {
 		sqlSession.delete("mapper.board.deleteFile", num);
+	}
+
+	@Override
+	public List<Board> selectBrdSearchList(Integer row, String type, String word) throws Exception {
+		Map<String,Object> param = new HashMap<>();
+		param.put("row", row);
+		param.put("type", type);
+		param.put("word", word);
+		return sqlSession.selectList("mapper.board.selectBrdSearchList", param);
+	}
+
+	@Override
+	public Integer selectBrdSearchCnt(String type, String word) throws Exception {
+		Map<String,Object> param = new HashMap<>();
+		param.put("type", type);
+		param.put("word", word);
+		return sqlSession.selectOne("mapper.board.selectBrdSearchCnt", param);
 	}
 
 }

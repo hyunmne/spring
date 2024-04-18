@@ -37,14 +37,23 @@ public class BoardController {
 	
 	@GetMapping("/boardList") // 밑에 줄이랑 같음
 //	@RequestMapping(value="/boardList", method=methodRequest.GET)
-	public ModelAndView boardList(@RequestParam(value="page", required=false, defaultValue="1") Integer page) {
+	// page를 가지고 오지 않았으면(required=false) 1로 대체(defaultValue)한다... 
+	public ModelAndView boardList(@RequestParam(value="page", required=false, defaultValue="1") Integer page
+								  , @RequestParam(value="type", required=false) String type
+								  , @RequestParam(value="word", required=false) String word) {
 		ModelAndView mav = new ModelAndView();
 		try {
 			PageInfo pageInfo = new PageInfo();
 			pageInfo.setCurPage(page);
-			List<Board> boardList = brdService.boardListByPage(pageInfo);
+			List<Board> boardList = brdService.boardListByPage(pageInfo, type, word);
 			mav.addObject("pageInfo", pageInfo);
 			mav.addObject("brdList", boardList);
+			
+			if(word!=null && word!=null) {
+				mav.addObject("type", type);
+				mav.addObject("word", word);
+			} 
+			
 			mav.setViewName("boardList");
 		} catch(Exception e) {
 			e.printStackTrace();

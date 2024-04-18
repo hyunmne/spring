@@ -82,7 +82,7 @@ public class MemberController {
 
 			memService.login(id, password);
 			session.setAttribute("user", id);
-			return "boardList";
+			return "redirect:boardList";
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("err", e.getMessage());

@@ -26,7 +26,7 @@
 		<b>${nickname }</b>&nbsp;&nbsp;<img src="${thumnail }" width="30px" height="30px" />&nbsp;&nbsp;<a href="logout" class="a">로그아웃</a>
 	</c:when>
 	<c:when test="${user ne Empty}">
-		<b>${user.name }</b>&nbsp;&nbsp;<a href="logout" class="a">로그아웃</a>
+		<b>${user}</b>&nbsp;&nbsp;<a href="logout" class="a">로그아웃</a>
 	</c:when>
 	<c:otherwise>
 		<a href="login" class="a">로그인</a>

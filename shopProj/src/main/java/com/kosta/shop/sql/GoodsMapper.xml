@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.goods">
+	
+	<select id="selectGoodsList" resultType="Goods">
+		<![CDATA[
+			select * from goods
+		]]>
+	</select>
+	
+	<select id="selectGoodsDetail" resultType="Goods" parameterType="String">
+		<![CDATA[
+			select * from goods where gCode = #{gCode}
+		]]>
+	</select>
+	
+</mapper>

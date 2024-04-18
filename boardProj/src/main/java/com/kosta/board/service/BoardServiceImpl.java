@@ -3,13 +3,12 @@ package com.kosta.board.service;
 import java.io.File;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kosta.board.dao.BoardDao;
+import com.kosta.board.dao.BoardLikeDao;
 import com.kosta.board.dto.BFile;
 import com.kosta.board.dto.Board;
 import com.kosta.board.util.PageInfo;
@@ -19,6 +18,9 @@ public class BoardServiceImpl implements BoardService {
 
 	@Autowired
 	private BoardDao brdDao;
+	
+	@Autowired
+	private BoardLikeDao brdLikeDao;
 
 	@Override
 	public List<Board> boardListByPage(PageInfo pageInfo) throws Exception {
@@ -111,6 +113,23 @@ public class BoardServiceImpl implements BoardService {
 			File beforeFile = new File(path, beforeFileNum+"");
 			beforeFile.delete();
 		}
+	}
+
+	@Override
+	public Boolean isSelectBoardLike(String memberId, Integer boardNum) throws Exception {
+		Integer num = brdLikeDao.selectBrdLike(memberId, boardNum);
+		return num!=null;
+	}
+
+	@Override
+	public Boolean checkBoardLike(String memberId, Integer boardNum) throws Exception {
+		Boolean isLike = isSelectBoardLike(memberId, boardNum);
+		if (isLike) {
+			brdLikeDao.deleteBrdLike(memberId, boardNum);
+		} else {
+			brdLikeDao.insertBrdLike(memberId, boardNum);
+		}
+		return !isLike;
 	}
 
 }

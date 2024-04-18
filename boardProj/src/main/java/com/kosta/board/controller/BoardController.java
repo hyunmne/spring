@@ -3,8 +3,10 @@ package com.kosta.board.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,11 +17,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kosta.board.dto.Board;
-import com.kosta.board.dto.Member;
 import com.kosta.board.service.BoardService;
 import com.kosta.board.util.PageInfo;
 
@@ -28,6 +31,9 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService brdService;
+	
+	@Autowired
+	private HttpSession session;
 	
 	@GetMapping("/boardList") // 밑에 줄이랑 같음
 //	@RequestMapping(value="/boardList", method=methodRequest.GET)
@@ -72,7 +78,11 @@ public class BoardController {
 			Board brd = brdService.brdDetail(num);
 			mav.addObject("brd", brd);
 			// like
-//			Member member = (Member) ;
+			String userId = (String)session.getAttribute("user");
+			if(userId!=null) {
+				Boolean like = brdService.isSelectBoardLike(userId, num);
+				mav.addObject("like", String.valueOf(like));
+			}
 			mav.setViewName("boardDetail");
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -124,6 +134,26 @@ public class BoardController {
 		}
 		
 		return mav;
+	}
+	
+	@ResponseBody // 비동기 (return 되는 것이 view가 아니라 data)
+	@PostMapping("/boardLike")
+	public String boardLike(@RequestParam("like") String like) {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			// json 형태의 문자열을 파싱하여 map에 넣어준다.
+			Map<String, String> param = mapper.readValue(like, Map.class);
+			System.out.println(param);
+			// map에 있는 데이터를 json 형태의 문자열로 변환해준다.
+			// String json = mapper.writeVaueAsSTring(map)
+			Boolean checkLike = brdService.checkBoardLike(
+									param.get("memberId"), 
+									Integer.parseInt(param.get("boardNum")));
+			return String.valueOf(checkLike);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "none";
+		}
 	}
 	
 }

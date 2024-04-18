@@ -19,7 +19,6 @@ public class BoardLikeDaoImpl implements BoardLikeDao {
 		param.put("memberId", memberId);
 		param.put("boardNum", boardNum);
 		sqlSession.insert("mapper.boardlike.insertBrdLike", param);
-		sqlSession.commit();
 	}
 
 	@Override
@@ -28,7 +27,6 @@ public class BoardLikeDaoImpl implements BoardLikeDao {
 		param.put("memberId", memberId);
 		param.put("boardNum", boardNum);
 		sqlSession.delete("mapper.boardlike.deleteBrdLike", param);
-		sqlSession.commit();
 	}
 
 	@Override

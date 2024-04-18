@@ -14,4 +14,8 @@ public interface BoardService {
 	Board brdDetail(Integer num) throws Exception;
 	void boardWrite(Board board, MultipartFile file) throws Exception;
 	void boardModify(Board board, MultipartFile file) throws Exception;
+	
+//	boardLike Method
+	Boolean isSelectBoardLike (String memberId, Integer boardNum) throws Exception;
+	Boolean checkBoardLike(String memberId, Integer boardNum) throws Exception;
 }

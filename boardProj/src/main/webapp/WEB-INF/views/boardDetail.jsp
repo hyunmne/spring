@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="path" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,16 +24,13 @@
 				url:'boardLike',
 				type:'post',
 				async:true,
-				data:{like:JSON.stringify({memberId:"${user.id}", boardNum:"${brd.num}"})},
+				data:{like:JSON.stringify({memberId:"${user}", boardNum:"${brd.num}"})},
 				success:function(result){
 					if(result=='true') {
-						$('#like').attr("src", "image?num=redheart.png")
+						$('#like').attr("src", "${path}/resources/image/redheart.png")
 					} else {
-						$('#like').attr("src", "image?num=blackheart.png")
+						$('#like').attr("src", "${path}/resources/image/blackheart.png")
 					}
-				}, 
-				error:funcition(err) {
-					
 				}
 			})
 		})
@@ -70,10 +68,10 @@
 		<c:if test="${user ne Empty }">
 			<c:choose>
 				<c:when test="${like eq 'true' }">
-					<img src="image?num=redheart.png" width="40px" height="40px" style="margin-top:5px;" id="like" />
+					<img src="${path}/resources/image/redheart.png" width="40px" height="40px" style="margin-top:5px;" id="like" />
 				</c:when>
 				<c:otherwise>
-					<img src="image?num=blackheart.png" width="40px" height="40px" style="margin-top:5px;" id="like"/>
+					<img src="${path}/resources/image/blackheart.png" width="40px" height="40px" style="margin-top:5px;" id="like"/>
 				</c:otherwise>
 			</c:choose>
 		</c:if>

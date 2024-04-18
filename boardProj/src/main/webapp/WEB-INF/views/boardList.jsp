@@ -39,8 +39,10 @@ table {
 </head>
 <body>
 <jsp:include page="main.jsp"/>
-	<h2 style="text-align:center;">
-		글 목록&nbsp;&nbsp;&nbsp;&nbsp;<a href="boardWrite">글쓰기</a>
+	<h2 style="text-align: center;">
+		글 목록&nbsp;&nbsp;&nbsp;&nbsp;
+		<c:if test="${user ne Empty }">
+		<a href="boardWrite">글쓰기</a> </c:if>
 	</h2>
 	<table>
 		<tr id="tr_top">

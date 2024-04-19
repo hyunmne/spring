@@ -21,4 +21,13 @@
 		]]>
 	</select>
 	
+	<update id="updateMember" parameterType="Member">
+		<![CDATA[
+			update member 
+			set post=#{post}, addr1 = #{addr1}, addr2=#{addr2}, 
+				phone1=#{phone1}, phone2=#{phone2}, phone3=#{phone3},
+				email1=#{email1}, email2=#{email}
+			where userid = #{userid}	
+		]]>
+	</update>
 </mapper>

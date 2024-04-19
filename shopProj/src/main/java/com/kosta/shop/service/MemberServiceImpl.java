@@ -31,4 +31,10 @@ public class MemberServiceImpl implements MemberService {
 		return member;
 	}
 
+	@Override
+	public void modifyMember(Member mem) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

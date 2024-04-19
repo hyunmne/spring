@@ -6,5 +6,6 @@
 	<typeAliases>
 		<typeAlias type="com.kosta.shop.dto.Member" alias="Member" />
 		<typeAlias type="com.kosta.shop.dto.Goods" alias="Goods" />
+		<typeAlias type="com.kosta.shop.dto.Cart" alias="Cart" />
 	</typeAliases>
 </configuration>

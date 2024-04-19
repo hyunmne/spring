@@ -1,6 +1,8 @@
 package com.kosta.shop.controller;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,11 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kosta.shop.dto.Cart;
 import com.kosta.shop.dto.Goods;
 import com.kosta.shop.dto.Member;
+import com.kosta.shop.dto.Order;
 import com.kosta.shop.service.CartService;
 import com.kosta.shop.service.GoodsService;
 
@@ -84,6 +88,96 @@ public class GoodsController {
 		}
 		
 		return carts;
+	}
+	
+	@GetMapping("/orderConfirm")
+	public ModelAndView orderConfirm(Goods goods, @RequestParam("gSize") String gSize,
+							@RequestParam("gColor") String gColor, @RequestParam("gAmount") Integer gAmount) {
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("gDTO", goods);
+		mav.addObject("gSize", gSize);
+		mav.addObject("gColor", gColor);
+		mav.addObject("gAmount", gAmount);
+		mav.setViewName("orderConfirm");
+		
+		return mav;
+	}
+	
+	@GetMapping("/cartOrderConfirm")
+	public ModelAndView cartOrderConfirm(@RequestParam("num") Integer num) {
+		ModelAndView mav = new ModelAndView();
+		try {
+			Cart cart = cService.cartRetrive(num);
+			mav.addObject("cDTO", cart);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		mav.setViewName("orderConfirm");
+		return mav;
+	}
+	
+	@GetMapping("/cartOrderAllConfirm")
+	public ModelAndView cartOrderAllConfirm(@RequestParam("check") Integer[] check, 
+											@RequestParam("cartAmount") Integer[] cartAmount) {
+		System.out.println(check);
+		System.out.println(cartAmount);
+		ModelAndView mav = new ModelAndView();
+		
+		try {
+			List<Cart> cartList = cService.orderAllConfirm(Arrays.asList(check));
+			for(int i =0; i<cartList.size(); i++) {
+				cartList.get(i).setgAmount(cartAmount[i]);
+			}
+			mav.addObject("cartList", cartList);
+		} catch (Exception e) {
+			
+		}
+		mav.setViewName("orderAllConfirm");
+		return mav;
+	}
+	
+	@ResponseBody
+	@GetMapping("/cartUpdate")
+	public void cartUpdate(@RequestParam Map<String,Integer> map) {
+		try {
+			cService.cartUpdate(map);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@ResponseBody
+	@GetMapping("/cartDelete")
+	public void cartDelete(@RequestParam Integer num) {
+		try {
+			cService.cartDelete(num);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@ResponseBody
+	@GetMapping("/CartDelAll")
+	public String cartDelAll(@RequestParam("check") Integer[] num) {
+		try {
+			cService.cartDeleteAll(Arrays.asList(num));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/cartList";
+	}
+	
+	@GetMapping("/cartOrderDone")
+	public String cartOrderDone(@ModelAttribute Order order, @RequestParam(required=false) Integer cartNum) {
+		Member member = (Member) session.getAttribute("user");
+		order.setUserid(member.getUserid());
+		try {
+			cService.orderDone(order, cartNum);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "orderDone";
 	}
 	
 }

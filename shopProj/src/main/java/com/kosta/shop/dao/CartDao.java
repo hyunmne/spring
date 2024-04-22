@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.kosta.shop.dto.Cart;
 import com.kosta.shop.dto.Order;
+import com.kosta.shop.dto.OrderInfo;
 
 public interface CartDao {
 	void insertCart(Cart cart) throws Exception;
@@ -14,5 +15,7 @@ public interface CartDao {
 	void updateCartAmount(Map<String,Integer> param) throws Exception;
 	void deleteCart(Integer num) throws Exception;
 	void insertOrder(Order order) throws Exception;
+	void insertOrderInfo(OrderInfo orderInfo) throws Exception;
+	List<Order> selectOrderList(Integer orderinfo_num) throws Exception;
 	
 }

@@ -18,6 +18,7 @@ import com.kosta.shop.dto.Cart;
 import com.kosta.shop.dto.Goods;
 import com.kosta.shop.dto.Member;
 import com.kosta.shop.dto.Order;
+import com.kosta.shop.dto.OrderInfo;
 import com.kosta.shop.service.CartService;
 import com.kosta.shop.service.GoodsService;
 
@@ -92,7 +93,8 @@ public class GoodsController {
 	
 	@GetMapping("/orderConfirm")
 	public ModelAndView orderConfirm(Goods goods, @RequestParam("gSize") String gSize,
-							@RequestParam("gColor") String gColor, @RequestParam("gAmount") Integer gAmount) {
+									 @RequestParam("gColor") String gColor, 
+									 @RequestParam("gAmount") Integer gAmount) {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("gDTO", goods);
 		mav.addObject("gSize", gSize);
@@ -119,12 +121,10 @@ public class GoodsController {
 	@GetMapping("/cartOrderAllConfirm")
 	public ModelAndView cartOrderAllConfirm(@RequestParam("check") Integer[] check, 
 											@RequestParam("cartAmount") Integer[] cartAmount) {
-		System.out.println(check);
-		System.out.println(cartAmount);
 		ModelAndView mav = new ModelAndView();
 		
 		try {
-			List<Cart> cartList = cService.orderAllConfirm(Arrays.asList(check));
+			List<Cart> cartList = cService.orderAllConfirm(Arrays.asList(check), Arrays.asList(cartAmount));
 			for(int i =0; i<cartList.size(); i++) {
 				cartList.get(i).setgAmount(cartAmount[i]);
 			}
@@ -169,15 +169,41 @@ public class GoodsController {
 	}
 	
 	@GetMapping("/cartOrderDone")
-	public String cartOrderDone(@ModelAttribute Order order, @RequestParam(required=false) Integer cartNum) {
+	public ModelAndView cartOrderDone(@ModelAttribute OrderInfo orderInfo, Order order, 
+								@RequestParam(required=false) Integer cartNum) {
+		
+		ModelAndView mav = new ModelAndView("orderDone");
 		Member member = (Member) session.getAttribute("user");
-		order.setUserid(member.getUserid());
+		
+		order.setUserId(member.getUserid());
+		orderInfo.setUserid(member.getUserid());
+		
 		try {
-			cService.orderDone(order, cartNum);
+			cService.orderDone(orderInfo, order, cartNum);
+			mav.addObject("order", order);
+			mav.addObject("orderInfo", orderInfo);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "orderDone";
+		return mav;
 	}
 	
+	
+	@GetMapping("/cartOrderAllDone")
+	public ModelAndView cartOrderAllDone(@RequestParam("num") Integer[] nums, 
+										 @ModelAttribute OrderInfo orderInfo) {
+		ModelAndView mav = new ModelAndView("orderAllDone");
+		Member member = (Member) session.getAttribute("user");
+		orderInfo.setUserid(member.getUserid());
+		
+		try {
+			cService.orderAllDone(orderInfo, Arrays.asList(nums));
+			List<Order> orderList = cService.orderList(orderInfo.getNum());
+			mav.addObject("orderInfo", orderInfo);
+			mav.addObject("orderAllDone", orderList);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return mav;
+	}
 }

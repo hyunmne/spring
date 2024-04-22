@@ -25,14 +25,14 @@
 				<a id="cartListBtn">장바구니</a>				
 			</div>
 	</header>
-	<c:set var="order" value="${orderDTO}"/>
+	<c:set var="order" value="${order}"/>
 	<div class="orderDetail">
 	<table>
 		<tr id="titleMessage">
 			<th>주문해주셔서 감사합니다.</th>
 		</tr>
 		<tr id="detailMessage">
-			<th>${order.userid} 님의 주문이	안전하게 처리되었습니다.</th>
+			<th>${orderInfo.userid} 님의 주문이	안전하게 처리되었습니다.</th>
 		</tr>
 		<tr>
 			<th>상품 및 배송정보</th>
@@ -42,17 +42,17 @@
 			<table>
 				<tr>
 					<td> 받으시는 분</td>
-					<td> ${order.orderName}</td>
+					<td> ${orderInfo.orderName}</td>
 				</tr>
 				<tr>
 					<td> 주소</td>
-					<td><span>(${order.post})</span> 
-						${order.addr1}&nbsp;${order.addr2}
+					<td><span>(${orderInfo.post})</span> 
+						${orderInfo.addr1}&nbsp;${orderInfo.addr2}
 					</td>
 				</tr>				
 				<tr>
 					<td> 휴대전화</td>
-					<td> ${order.phone}</td>
+					<td> ${orderInfo.phone}</td>
 				</tr>
 			</table>
 		</tr>
@@ -94,7 +94,7 @@
 					</tr>
 					<tr>
 						<td> 결제수단</td>
-						<th> ${order.payMethod}</th>
+						<th> ${orderInfo.payMethod}</th>
 					</tr>
 				</table>
 			</td>

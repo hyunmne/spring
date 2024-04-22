@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kosta.shop.dto.Cart;
 import com.kosta.shop.dto.Order;
+import com.kosta.shop.dto.OrderInfo;
 
 @Repository
 public class CartDaoImpl implements CartDao {
@@ -49,7 +50,17 @@ public class CartDaoImpl implements CartDao {
 
 	@Override
 	public void insertOrder(Order order) throws Exception {
-		sqlSession.insert("mapper.order.insertOrder", order);
+		sqlSession.insert("mapper.cart.insertOrder", order);
+	}
+
+	@Override
+	public void insertOrderInfo(OrderInfo orderInfo) throws Exception {
+		sqlSession.insert("mapper.cart.insertOrderInfo", orderInfo);
+	}
+
+	@Override
+	public List<Order> selectOrderList(Integer orderinfo_num) throws Exception {
+		return sqlSession.selectList("mapper.cart.selectOrderList", orderinfo_num);
 	}
 	
 }

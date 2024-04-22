@@ -32,9 +32,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void modifyMember(Member mem) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public Member myPage(String userid) throws Exception {
+		return memDao.selectMember(userid);
+	}
+
+	@Override
+	public void modifyMyPage(Member mem) throws Exception {
+		memDao.updateMember(mem);
 	}
 
 }

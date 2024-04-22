@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -62,8 +63,17 @@ public class MemberController {
 	}
 	
 	@PostMapping("/updateMember") 
-	public String updateMember() {
-		return "";
+	public String updateMember(@ModelAttribute Member member, Model model) {
+		model.addAttribute("action", "회원 정보 수정");
+		try {
+			memService.modifyMyPage(member);
+			session.setAttribute("user", memService.myPage(member.getUserid()));
+			model.addAttribute("message", "회원 정보 수정 성공");
+		} catch(Exception e) {
+			e.printStackTrace();
+			model.addAttribute("message", "회원 정보 수정 실패");
+		}
+		return "memberResult";
 	}
 	
 }
